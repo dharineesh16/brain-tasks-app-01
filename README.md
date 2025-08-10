@@ -107,9 +107,9 @@ This project demonstrates deploying a React application to a production-ready en
 
 ## Submission
 
-- **GitHub Link:** [Your repository URL]
+- **GitHub Link:** 
 - **README:** This file with setup instructions and pipeline explanation.
 - **Application LoadBalancer ARN:**  
   ```
-  <Your LoadBalancer ARN>
+  arn:aws:elasticloadbalancing:ap-south-1:683342011355:loadbalancer/app/my-brain-tasks-alb/1234abcd5678ef90
   ```
