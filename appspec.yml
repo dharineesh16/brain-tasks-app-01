@@ -1,0 +1,6 @@
+version: 0.0
+resources:
+  - kubernetes:
+      manifest:
+        - deployment.yaml
+        - service.yaml
