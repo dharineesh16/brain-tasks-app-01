@@ -1,10 +1,21 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      python: 3.x
+    commands:
+      - echo Installing kubectl and AWS CLI...
+      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
+      - pip install --upgrade awscli
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 683342011355.dkr.ecr.ap-south-1.amazonaws.com
+      - echo Configuring kubeconfig for EKS...
+      - aws eks update-kubeconfig --region ap-south-1 --name brain-tasks-app
   build:
     commands:
       - echo Building Docker image...
@@ -14,6 +25,9 @@ phases:
     commands:
       - echo Pushing Docker image...
       - docker push 683342011355.dkr.ecr.ap-south-1.amazonaws.com/brain-tasks-app:latest
+      - echo Deploying to EKS...
+      - kubectl apply -f deployment.yaml
+      - kubectl apply -f service.yaml
 artifacts:
   files:
     - appspec.yml
